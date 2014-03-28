@@ -39,7 +39,7 @@ import java.util.List;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class Cube implements Primitive {
+public class Cube extends Primitive {
 
     /**
      * Center of this cube.
@@ -51,8 +51,6 @@ public class Cube implements Primitive {
     private Vector3d dimensions;
     
     private boolean centered;
-    
-    private final PropertyStorage properties = new PropertyStorage();
 
     /**
      * Constructor. Creates a new cube with center {@code [0,0,0]} and
@@ -113,7 +111,7 @@ public class Cube implements Primitive {
                         (double) info[1][2]
                 )));
             }
-            polygons.add(new Polygon(vertices,properties));
+            polygons.add(new Polygon(vertices));
         }
         
         if (!centered) {
@@ -156,11 +154,6 @@ public class Cube implements Primitive {
         this.dimensions = dimensions;
     }
 
-    @Override
-    public PropertyStorage getProperties() {
-        return properties;
-    }
-    
     public Cube noCenter() {
         centered = true;
         return this;

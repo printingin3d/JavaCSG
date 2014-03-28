@@ -18,14 +18,19 @@ In addition to CSG this library provides the following features:
 
 ### Requirements
 
-- Java >= 1.8
+- Java >= 1.7
 - Internet connection (dependencies are downloaded automatically)
 - IDE: [Gradle](http://www.gradle.org/) Plugin (not necessary for command line usage)
+       Eclipse doesn't need plugin
 
 ### IDE
 
 Open the `JavaCSG` [Gradle](http://www.gradle.org/) project in your favourite IDE (tested with NetBeans 7.4) and build it
 by calling the `assemble` task.
+
+#### Eclipse
+
+You can run the `eclipse` task in the command line and import the project as an existing project into Eclipse. No plugin is needed in Eclipse.
 
 ### Command Line
 

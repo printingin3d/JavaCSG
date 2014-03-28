@@ -84,15 +84,6 @@ public class Transform {
     }
 
     /**
-     * Constructor.
-     *
-     * @param m matrix
-     */
-    private Transform(Matrix4d m) {
-        this.m = m;
-    }
-
-    /**
      * Applies rotation operation around the x axis to this transform.
      *
      * @param degrees degrees

@@ -88,34 +88,4 @@ public class ServoWheel {
     public static CSG arm(double toothLength, double toothWidth, double headHeight, double headHeight1, double headHeight2, int holeCount) {
         return null;
     }
-    
-    private static CSG union(CSG first, CSG... csgs) {
-        CSG result = first;
-        
-        for (CSG csg : csgs) {
-            result = result.union(csg);
-        }
-        
-        return first;
-    }
-    
-    private static CSG difference(CSG first, CSG... csgs) {
-        CSG result = first;
-        
-        for (CSG csg : csgs) {
-            result = result.difference(csg);
-        }
-        
-        return first;
-    }
-    
-    private static CSG intersect(CSG first, CSG... csgs) {
-        CSG result = first;
-        
-        for (CSG csg : csgs) {
-            result = result.intersect(csg);
-        }
-        
-        return first;
-    }
 }

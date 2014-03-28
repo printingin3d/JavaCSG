@@ -65,10 +65,7 @@ public final class Polygon {
      * Polygon vertices
      */
     public final List<Vertex> vertices;
-    /**
-     * Shared property (can be used for shared color etc.).
-     */
-    public final PropertyStorage shared;
+
     /**
      * Plane defined by this polygon.
      *
@@ -84,29 +81,9 @@ public final class Polygon {
      * and form a convex loop.
      *
      * @param vertices polygon vertices
-     * @param shared shared property
-     */
-    public Polygon(List<Vertex> vertices, PropertyStorage shared) {
-        this.vertices = vertices;
-        this.shared = shared;
-        this.plane = Plane.createFromPoints(
-                vertices.get(0).pos,
-                vertices.get(1).pos,
-                vertices.get(2).pos);
-    }
-
-    /**
-     * Constructor. Creates a new polygon that consists of the specified
-     * vertices.
-     *
-     * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
-     * and form a convex loop.
-     *
-     * @param vertices polygon vertices
      */
     public Polygon(List<Vertex> vertices) {
         this.vertices = vertices;
-        this.shared = new PropertyStorage();
         this.plane = Plane.createFromPoints(
                 vertices.get(0).pos,
                 vertices.get(1).pos,
@@ -130,10 +107,10 @@ public final class Polygon {
     @Override
     public Polygon clone() {
         List<Vertex> newVertices = new ArrayList<>();
-        this.vertices.forEach((vertex) -> {
-            newVertices.add(vertex.clone());
-        });
-        return new Polygon(newVertices, shared);
+        for (Vertex vertex : vertices) {
+        	newVertices.add(vertex.clone());
+        }
+        return new Polygon(newVertices);
     }
 
     /**
@@ -142,9 +119,9 @@ public final class Polygon {
      * @return this polygon
      */
     public Polygon flip() {
-        vertices.forEach((vertex) -> {
+    	for (Vertex vertex : vertices) {
             vertex.flip();
-        });
+    	}
         Collections.reverse(vertices);
 
         plane.flip();
@@ -214,9 +191,9 @@ public final class Polygon {
      * @return this polygon
      */
     public Polygon translate(Vector3d v) {
-        vertices.forEach((vertex) -> {
+    	for (Vertex vertex : vertices) {
             vertex.pos = vertex.pos.plus(v);
-        });
+    	}
         return this;
     }
 
@@ -245,10 +222,9 @@ public final class Polygon {
      */
     public Polygon transform(Transform transform) {
 
-        this.vertices.stream().forEach(
-                (v) -> {
-                    v.transform(transform);
-                });
+    	for (Vertex v : vertices) {
+    		v.transform(transform);
+    	}
 
         if (transform.isMirror()) {
             // the transformation includes mirroring. flip polygon
@@ -278,22 +254,10 @@ public final class Polygon {
      * Creates a polygon from the specified point list.
      *
      * @param points the points that define the polygon
-     * @param shared shared property storage
-     * @return a polygon defined by the specified point list
-     */
-    public static Polygon fromPoints(List<Vector3d> points,
-            PropertyStorage shared) {
-        return fromPoints(points, shared, null);
-    }
-
-    /**
-     * Creates a polygon from the specified point list.
-     *
-     * @param points the points that define the polygon
      * @return a polygon defined by the specified point list
      */
     public static Polygon fromPoints(List<Vector3d> points) {
-        return fromPoints(points, new PropertyStorage(), null);
+        return fromPoints(points, null);
     }
 
     /**
@@ -303,7 +267,7 @@ public final class Polygon {
      * @return a polygon defined by the specified point list
      */
     public static Polygon fromPoints(Vector3d... points) {
-        return fromPoints(Arrays.asList(points), new PropertyStorage(), null);
+        return fromPoints(Arrays.asList(points), null);
     }
 
     /**
@@ -314,8 +278,7 @@ public final class Polygon {
      * @param plane may be null
      * @return a polygon defined by the specified point list
      */
-    private static Polygon fromPoints(
-            List<Vector3d> points, PropertyStorage shared, Plane plane) {
+    private static Polygon fromPoints(List<Vector3d> points, Plane plane) {
 
         Vector3d normal
                 = (plane != null) ? plane.normal.clone() : new Vector3d(0, 0, 0);
@@ -328,7 +291,7 @@ public final class Polygon {
             vertices.add(vertex);
         }
 
-        return new Polygon(vertices, shared);
+        return new Polygon(vertices);
     }
 
 //    private static List<Polygon> concaveToConvex(Polygon concave) {

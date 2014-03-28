@@ -63,8 +63,6 @@ package eu.mihosoft.vrl.v3d.ext.org.poly2tri;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 
@@ -73,8 +71,6 @@ import org.slf4j.LoggerFactory;
  */
 class DTSweepContext extends TriangulationContext<DTSweepDebugContext>
 {
-    private final static Logger logger = LoggerFactory.getLogger( DTSweepContext.class );
-
     // Inital triangle factor, seed triangle will extend 30% of 
     // PointSet width to both left and right.
     private final float ALPHA = 0.3f;
@@ -88,14 +84,15 @@ class DTSweepContext extends TriangulationContext<DTSweepDebugContext>
     protected Basin basin = new Basin();
     protected EdgeEvent edgeEvent = new EdgeEvent();
     
-    private DTSweepPointComparator _comparator = new DTSweepPointComparator();
+    private final DTSweepPointComparator _comparator = new DTSweepPointComparator();
     
     public DTSweepContext()
     {
         clear();
     }
         
-    public void isDebugEnabled( boolean b )
+    @Override
+	public void isDebugEnabled( boolean b )
     {
         if( b )
         {
@@ -150,7 +147,8 @@ class DTSweepContext extends TriangulationContext<DTSweepDebugContext>
         }
     }
     
-    public void clear()
+    @Override
+	public void clear()
     {
         super.clear();
         _triList.clear();
@@ -262,14 +260,18 @@ class DTSweepContext extends TriangulationContext<DTSweepDebugContext>
         // Calculate bounds. Should be combined with the sorting
         for( TriangulationPoint p : _points )
         {
-            if( p.getX() > xmax )
-                xmax = p.getX();
-            if( p.getX() < xmin )
-                xmin = p.getX();
-            if( p.getY() > ymax )
-                ymax = p.getY();
-            if( p.getY() < ymin )
-                ymin = p.getY();
+            if( p.getX() > xmax ) {
+				xmax = p.getX();
+			}
+            if( p.getX() < xmin ) {
+				xmin = p.getX();
+			}
+            if( p.getY() > ymax ) {
+				ymax = p.getY();
+			}
+            if( p.getY() < ymin ) {
+				ymin = p.getY();
+			}
         }
 
         double deltaX = ALPHA * ( xmax - xmin );

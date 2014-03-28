@@ -1,6 +1,7 @@
 apply plugin: 'java'
+apply plugin: 'eclipse'
 
-sourceCompatibility = '1.8'
+sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 if (!hasProperty('mainClass')) {

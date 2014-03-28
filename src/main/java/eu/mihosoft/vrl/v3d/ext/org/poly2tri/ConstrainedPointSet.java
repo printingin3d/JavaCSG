@@ -108,19 +108,18 @@ class ConstrainedPointSet extends PointSet
         return _index;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void prepareTriangulation( TriangulationContext tcx )
+    public void prepareTriangulation( TriangulationContext<?> tcx )
     {
         super.prepareTriangulation( tcx );
         if( _constrainedPointList != null )
         {
         	TriangulationPoint p1,p2;
-        	Iterator iterator = _constrainedPointList.iterator();
+        	Iterator<TriangulationPoint> iterator = _constrainedPointList.iterator();
     		while(iterator.hasNext())
     		{
-    			p1 = (TriangulationPoint)iterator.next();
-    			p2 = (TriangulationPoint)iterator.next();
+    			p1 = iterator.next();
+    			p2 = iterator.next();
     			tcx.newConstraint(p1,p2);
     		}
         }

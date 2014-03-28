@@ -12,8 +12,7 @@
   */
 package eu.mihosoft.vrl.v3d.ext.quickhull3d;
 
-import java.util.*;
-import java.io.*;
+import java.util.Random;
 
 /**
  * Testing class for QuickHull3D. Running the command
@@ -302,34 +301,29 @@ public class QuickHull3DTest
 "Error: " + faceIndices.length + " faces vs. " + checkFaces.length);
 	    }
 	   // translate face indices back into original indices
-	   Point3d[] pnts = hull.getVertices();
 	   int[] vtxIndices = hull.getVertexPointIndices();
 
-	   for (int j=0; j<faceIndices.length; j++)
-	    { int[] idxs = faceIndices[j];
-	      for (int k=0; k<idxs.length; k++)
-	       { idxs[k] = vtxIndices[idxs[k]];
-	       }
-	    }
-	   for (int i=0; i<checkFaces.length; i++)
-	    { int[] cf = checkFaces[i];
-	      int j;
-	      for (j=0; j<faceIndices.length; j++)
-	       { if (faceIndices[j] != null)
-		  { if (faceIndicesEqual (cf, faceIndices[j]))
-		     { faceIndices[j] = null;
-		       break;
-		     }
-		  }
-	       }
-	      if (j == faceIndices.length)
-	       { String s = "";
-		 for (int k=0; k<cf.length; k++)
-		  { s += cf[k] + " ";
-		  }
-		 throw new Exception ("Error: face " + s + " not found");
-	       }
-	    }
+	   for (int[] faceIndice : faceIndices) { int[] idxs = faceIndice;
+	  for (int k=0; k<idxs.length; k++)
+	   { idxs[k] = vtxIndices[idxs[k]];
+	   }
+	}
+	   for (int[] cf : checkFaces) { int j;
+	  for (j=0; j<faceIndices.length; j++)
+	   { if (faceIndices[j] != null)
+	  { if (faceIndicesEqual (cf, faceIndices[j]))
+	     { faceIndices[j] = null;
+	       break;
+	     }
+	  }
+	   }
+	  if (j == faceIndices.length)
+	   { String s = "";
+	 for (int element : cf) { s += element + " ";
+	  }
+	 throw new Exception ("Error: face " + s + " not found");
+	   }
+	}
 	 }
 
 	int cnt = 0;
@@ -447,8 +441,6 @@ public class QuickHull3DTest
 	   double m12 = sroll * spitch * cyaw - croll * syaw;
 	   double m22 = cpitch * cyaw;
 
-	   double x, y, z;
-
 	   for (int i=0; i<xyz.length-2; i+=3)
 	    {
 	      res[i+0] = m00*xyz[i+0] + m01*xyz[i+1] + m02*xyz[i+2];
@@ -510,9 +502,7 @@ public class QuickHull3DTest
 	   singleTest (coords, checkFaces);
 	   if (testRotation)
 	    { 
-	      for (int i=0; i<rpyList.length; i++)
-	       { double[] rpy = rpyList[i]; 
-		 rotateCoords (xcoords, coords,
+	      for (double[] rpy : rpyList) { rotateCoords (xcoords, coords,
 			       Math.toRadians(rpy[0]),
 			       Math.toRadians(rpy[1]),
 			       Math.toRadians(rpy[2]));
@@ -676,17 +666,16 @@ public class QuickHull3DTest
 	 {
 	   QuickHull3DTest tester = new QuickHull3DTest();
 
-	   for (int i=0; i<args.length; i++)
-	    { if (args[i].equals ("-timing"))
-	       { doTiming = true;
-		 doTesting = false;
-	       }
-	      else
-	       { System.out.println (
+	   for (String arg : args) { if (arg.equals ("-timing"))
+	   { doTiming = true;
+	 doTesting = false;
+	   }
+	  else
+	   { System.out.println (
 "Usage: java quickhull3d.QuickHull3DTest [-timing]");
-		 System.exit(1);
-	       }
-	    }
+	 System.exit(1);
+	   }
+	}
 	   if (doTesting)
 	    { tester.explicitAndRandomTests();
 	    }

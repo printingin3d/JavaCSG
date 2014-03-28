@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -48,7 +47,7 @@ public class STLLoader {
 
     // attributes of the currently read mesh
     private ArrayList<Point3f> vertices = new ArrayList<>();
-    private Point3f normal = new Point3f(0.0f, 0.0f, 0.0f); //to be used for file checking
+    private final Point3f normal = new Point3f(0.0f, 0.0f, 0.0f); //to be used for file checking
     private FileInputStream fis;
     private int triangles;
 //    private DecimalFormat decimalFormat = new DecimalFormat("0.0E0");
@@ -62,31 +61,39 @@ public class STLLoader {
         // and send to the appropriate parsing method
         // Hypothesis 1: this is an ASCII STL
         BufferedReader br = new BufferedReader(new FileReader(f));
-        String line = br.readLine();
-        String[] words = line.trim().split("\\s+");
-        if (line.indexOf('\0') < 0 && words[0].equalsIgnoreCase("solid")) {
-            System.out.println("Looks like an ASCII STL");
-            parseAscii(f);
-            return vertices;
+        try {
+	        String line = br.readLine();
+	        String[] words = line.trim().split("\\s+");
+	        if (line.indexOf('\0') < 0 && words[0].equalsIgnoreCase("solid")) {
+	            System.out.println("Looks like an ASCII STL");
+	            parseAscii(f);
+	            return vertices;
+	        }
+	
+	        // Hypothesis 2: this is a binary STL
+	        FileInputStream fs = new FileInputStream(f);
+	        try { 
+		        // bytes 80, 81, 82 and 83 form a little-endian int
+		        // that contains the number of triangles
+		        byte[] buffer = new byte[84];
+		        fs.read(buffer, 0, 84);
+		        triangles = ((buffer[83] & 0xff) << 24)
+		                | ((buffer[82] & 0xff) << 16) | ((buffer[81] & 0xff) << 8) | (buffer[80] & 0xff);
+		        if (((f.length() - 84) / 50) == triangles) {
+		            System.out.println("Looks like a binary STL");
+		            parseBinary(f);
+		            return vertices;
+		        }
+	        }
+		    finally {
+		    	fs.close();
+		    }
+	        System.err.println("File is not a valid STL");
         }
-
-        // Hypothesis 2: this is a binary STL
-        FileInputStream fs = new FileInputStream(f);
-
-                // bytes 80, 81, 82 and 83 form a little-endian int
-        // that contains the number of triangles
-        byte[] buffer = new byte[84];
-        fs.read(buffer, 0, 84);
-        triangles = (int) (((buffer[83] & 0xff) << 24)
-                | ((buffer[82] & 0xff) << 16) | ((buffer[81] & 0xff) << 8) | (buffer[80] & 0xff));
-        if (((f.length() - 84) / 50) == triangles) {
-            System.out.println("Looks like a binary STL");
-            parseBinary(f);
-            return vertices;
+        finally {
+        	br.close();
         }
-        System.err.println("File is not a valid STL");
-        
-        return vertices;
+	    return vertices;
     }
 
     private void parseAscii(File f) {

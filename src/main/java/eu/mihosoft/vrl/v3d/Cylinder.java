@@ -44,14 +44,12 @@ import java.util.List;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class Cylinder implements Primitive {
+public class Cylinder extends Primitive {
 
     private Vector3d start;
     private Vector3d end;
     private double radius;
     private int numSlices;
-
-    private final PropertyStorage properties = new PropertyStorage();
 
     /**
      * Constructor. Creates a new cylinder with center {@code [0,0,0]} and
@@ -117,22 +115,19 @@ public class Cylinder implements Primitive {
             polygons.add(new Polygon(Arrays.asList(
                     startV,
                     cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, -1),
-                    cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1)),
-                    properties
+                    cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1))
             ));
             polygons.add(new Polygon(Arrays.asList(
                     cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, 0),
                     cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, 0),
                     cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0),
-                    cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)),
-                    properties
+                    cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0))
             ));
             polygons.add(new Polygon(
                     Arrays.asList(
                             endV,
                             cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1),
-                            cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)),
-                    properties
+                            cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1))
             )
             );
         }
@@ -205,10 +200,4 @@ public class Cylinder implements Primitive {
     public void setNumSlices(int numSlices) {
         this.numSlices = numSlices;
     }
-
-    @Override
-    public PropertyStorage getProperties() {
-        return properties;
-    }
-
 }

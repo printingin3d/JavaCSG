@@ -37,7 +37,7 @@ import java.util.List;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public interface Primitive {
+public abstract class Primitive {
 
     /**
      * Returns the polygons that define this primitive.
@@ -47,20 +47,14 @@ public interface Primitive {
      *
      * @return al list of polygons that define this primitive
      */
-    public List<Polygon> toPolygons();
+    public abstract List<Polygon> toPolygons();
 
     /**
      * Returns this primitive as {@link CSG}.
      *
      * @return this primitive as {@link CSG}
      */
-    public default CSG toCSG() {
+    public CSG toCSG() {
         return CSG.fromPolygons(toPolygons());
     }
-    
-    /**
-     * Returns the property storage of this primitive.
-     * @return the property storage of this primitive
-     */
-    public PropertyStorage getProperties();
 }

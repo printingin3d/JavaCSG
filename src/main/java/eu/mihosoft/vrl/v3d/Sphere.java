@@ -41,14 +41,12 @@ import java.util.List;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class Sphere implements Primitive {
+public class Sphere extends Primitive {
 
     private Vector3d center;
     private double radius;
     private int numSlices;
     private int numStacks;
-    
-    private final PropertyStorage properties = new PropertyStorage();
 
     /**
      * Constructor. Creates a sphere with radius 1, 16 slices and 8 stacks and
@@ -132,7 +130,7 @@ public class Sphere implements Primitive {
                         sphereVertex(center, radius, i / (double) numSlices,
                                 (j + 1) / (double) numStacks)
                 );
-                polygons.add(new Polygon(vertices, getProperties()));
+                polygons.add(new Polygon(vertices));
             }
         }
         return polygons;
@@ -193,10 +191,4 @@ public class Sphere implements Primitive {
     public void setNumStacks(int numStacks) {
         this.numStacks = numStacks;
     }
-
-    @Override
-    public PropertyStorage getProperties() {
-        return properties;
-    }
-
 }

@@ -36,8 +36,6 @@ package eu.mihosoft.vrl.v3d;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import javafx.scene.shape.TriangleMesh;
 
 /**
  * Constructive Solid Geometry (CSG).
@@ -117,9 +115,9 @@ public class CSG {
     public CSG clone() {
         CSG csg = new CSG();
         csg.polygons = new ArrayList<>();
-        polygons.stream().forEach((polygon) -> {
-            csg.polygons.add(polygon.clone());
-        });
+        for (Polygon p : polygons) {
+            csg.polygons.add(p.clone());
+        }
         return csg;
     }
 
@@ -259,10 +257,9 @@ public class CSG {
      */
     public StringBuilder toStlString(StringBuilder sb) {
         sb.append("solid v3d.csg\n");
-        this.polygons.stream().forEach(
-                (Polygon p) -> {
-                    p.toStlString(sb);
-                });
+        for (Polygon p : this.polygons) {
+        	p.toStlString(sb);
+        }
         sb.append("endsolid v3d.csg\n");
         return sb;
     }
@@ -275,9 +272,10 @@ public class CSG {
      * @return a transformed copy of this CSG
      */
     public CSG transformed(Transform transform) {
-        List<Polygon> newpolygons = this.polygons.stream().map(
-                p -> p.transformed(transform)
-        ).collect(Collectors.toList());
+    	List<Polygon> newpolygons = new ArrayList<>();
+    	for (Polygon p : this.polygons) {
+    		newpolygons.add(p.transformed(transform));
+    	}
 
         CSG result = CSG.fromPolygons(newpolygons);
 
@@ -289,7 +287,7 @@ public class CSG {
      *
      * @return the CSG as JavaFX triangle mesh
      */
-    public TriangleMesh toJavaFXMesh() {
+/*    public TriangleMesh toJavaFXMesh() {
 
         TriangleMesh mesh = new TriangleMesh();
 
@@ -345,6 +343,6 @@ public class CSG {
         } // end for
 
         return mesh;
-    }
+    }*/
 
 }

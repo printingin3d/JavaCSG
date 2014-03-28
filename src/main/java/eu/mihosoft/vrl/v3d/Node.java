@@ -87,9 +87,9 @@ final class Node {
         node.front = this.front == null ? null : this.front.clone();
         node.back = this.back == null ? null : this.back.clone();
         node.polygons = new ArrayList<>();
-        polygons.forEach((Polygon p) -> {
-            node.polygons.add(p.clone());
-        });
+        for (Polygon p : polygons) {
+        	node.polygons.add(p.clone());
+        }
         return node;
     }
 
@@ -214,10 +214,10 @@ final class Node {
         List<Polygon> frontP = new ArrayList<>();
         List<Polygon> backP = new ArrayList<>();
 
-        polygons.forEach((polygon) -> {
+        for (Polygon polygon : polygons) {
             this.plane.splitPolygon(
                     polygon, this.polygons, this.polygons, frontP, backP);
-        });
+        }
         if (frontP.size() > 0) {
             if (this.front == null) {
                 this.front = new Node();

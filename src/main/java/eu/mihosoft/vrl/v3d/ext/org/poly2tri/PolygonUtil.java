@@ -30,13 +30,13 @@
 
 package eu.mihosoft.vrl.v3d.ext.org.poly2tri;
 
-import eu.mihosoft.vrl.v3d.Extrude;
-import eu.mihosoft.vrl.v3d.Plane;
-import eu.mihosoft.vrl.v3d.Vector3d;
-import eu.mihosoft.vrl.v3d.Vertex;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import eu.mihosoft.vrl.v3d.Extrude;
+import eu.mihosoft.vrl.v3d.Vector3d;
+import eu.mihosoft.vrl.v3d.Vertex;
 
 /**
  *
