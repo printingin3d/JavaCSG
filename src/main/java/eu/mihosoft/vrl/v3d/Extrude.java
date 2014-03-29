@@ -33,11 +33,12 @@
  */
 package eu.mihosoft.vrl.v3d;
 
-import eu.mihosoft.vrl.v3d.ext.org.poly2tri.PolygonUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import eu.mihosoft.vrl.v3d.ext.org.poly2tri.PolygonUtil;
 
 /**
  * Extrudes concave and convex polygons.
@@ -93,10 +94,10 @@ public class Extrude {
 
             int nexti = (i + 1) % numvertices;
 
-            Vector3d bottomV1 = polygon1.vertices.get(i).pos;
-            Vector3d topV1 = polygon2.vertices.get(i).pos;
-            Vector3d bottomV2 = polygon1.vertices.get(nexti).pos;
-            Vector3d topV2 = polygon2.vertices.get(nexti).pos;
+            Vector3d bottomV1 = polygon1.vertices.get(i).getPos();
+            Vector3d topV1 = polygon2.vertices.get(i).getPos();
+            Vector3d bottomV2 = polygon1.vertices.get(nexti).getPos();
+            Vector3d topV2 = polygon2.vertices.get(nexti).getPos();
 
             List<Vector3d> pPoints = Arrays.asList(bottomV2, topV2, topV1, bottomV1);
 
@@ -148,11 +149,11 @@ public class Extrude {
         for (int i = 0; i < polygon.vertices.size(); i++) {
             Vertex v = polygon.vertices.get(i);
 
-            if (v.pos.y > highestLeftVertex.pos.y) {
+            if (v.getPos().y > highestLeftVertex.getPos().y) {
                 highestLeftVertex = v;
                 highestLeftVertexIndex = i;
-            } else if (v.pos.y == highestLeftVertex.pos.y
-                    && v.pos.x < highestLeftVertex.pos.x) {
+            } else if (v.getPos().y == highestLeftVertex.getPos().y
+                    && v.getPos().x < highestLeftVertex.getPos().x) {
                 highestLeftVertex = v;
                 highestLeftVertexIndex = i;
             }
@@ -168,10 +169,10 @@ public class Extrude {
         Vertex prevVertex = polygon.vertices.get(prevVertexIndex);
 
         // edge 1
-        double a1 = normalizedX(highestLeftVertex.pos, nextVertex.pos);
+        double a1 = normalizedX(highestLeftVertex.getPos(), nextVertex.getPos());
 
         // edge 2
-        double a2 = normalizedX(highestLeftVertex.pos, prevVertex.pos);
+        double a2 = normalizedX(highestLeftVertex.getPos(), prevVertex.getPos());
 
         // select vertex with lowest x value
         int selectedVIndex;

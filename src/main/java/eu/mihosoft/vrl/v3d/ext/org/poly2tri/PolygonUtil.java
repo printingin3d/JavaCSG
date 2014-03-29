@@ -52,18 +52,14 @@ public class PolygonUtil {
 
         List<eu.mihosoft.vrl.v3d.Polygon> result = new ArrayList<>();
 
-        Vector3d normal = concave.vertices.get(0).normal.clone();
+        Vector3d normal = concave.vertices.get(0).getNormal();
 
-//        Plane plane = concave.plane.clone();
-//
-//        boolean cw = plane.dist > 0;
-        
         boolean cw = !Extrude.isCCW(concave);
 
         List< PolygonPoint> points = new ArrayList<>();
 
         for (Vertex v : concave.vertices) {
-            PolygonPoint vp = new PolygonPoint(v.pos.x, v.pos.y, v.pos.z);
+            PolygonPoint vp = new PolygonPoint(v.getPos().x, v.getPos().y, v.getPos().z);
             points.add(vp);
         }
 

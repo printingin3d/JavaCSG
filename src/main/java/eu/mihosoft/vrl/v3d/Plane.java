@@ -99,7 +99,7 @@ public class Plane {
 
     @Override
     public Plane clone() {
-        return new Plane(normal.clone(), dist);
+        return new Plane(normal, dist);
     }
 
     /**
@@ -139,8 +139,8 @@ public class Plane {
         // four classes.
         int polygonType = 0;
         List<Integer> types = new ArrayList<>();
-        for (int i = 0; i < polygon.vertices.size(); i++) {
-            double t = this.normal.dot(polygon.vertices.get(i).pos) - this.dist;
+        for (Vertex v : polygon.vertices) {
+            double t = this.normal.dot(v.getPos()) - this.dist;
             int type = (t < -Plane.EPSILON) ? BACK : (t > Plane.EPSILON) ? FRONT : COPLANAR;
             polygonType |= type;
             types.add(type);
@@ -173,7 +173,7 @@ public class Plane {
                         b.add(ti != BACK ? vi.clone() : vi);
                     }
                     if ((ti | tj) == SPANNING) {
-                        double t = (this.dist - this.normal.dot(vi.pos)) / this.normal.dot(vj.pos.minus(vi.pos));
+                        double t = (this.dist - this.normal.dot(vi.getPos())) / this.normal.dot(vj.getPos().minus(vi.getPos()));
                         Vertex v = vi.interpolate(vj, t);
                         f.add(v);
                         b.add(v.clone());

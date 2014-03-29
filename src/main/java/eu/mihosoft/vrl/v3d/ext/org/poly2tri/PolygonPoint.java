@@ -62,8 +62,8 @@ package eu.mihosoft.vrl.v3d.ext.org.poly2tri;
 
 class PolygonPoint extends TPoint
 {
-    protected PolygonPoint _next;
-    protected PolygonPoint _previous;
+    private PolygonPoint _next;
+    private PolygonPoint _previous;
     
     public PolygonPoint( double x, double y )
     {

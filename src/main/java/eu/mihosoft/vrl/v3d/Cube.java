@@ -106,21 +106,24 @@ public class Cube extends Primitive {
                         center.z + dimensions.z * (1 * Math.min(1, i & 4) - 0.5)
                 );
                 vertices.add(new Vertex(pos, new Vector3d(
-                        (double) info[1][0],
-                        (double) info[1][1],
-                        (double) info[1][2]
+                        info[1][0],
+                        info[1][1],
+                        info[1][2]
                 )));
             }
             polygons.add(new Polygon(vertices));
         }
         
         if (!centered) {
-            
             Transform centerTransform = Transform.unity().translate(dimensions.x/2.0, dimensions.y/2.0, dimensions.z/2.0);
+
+            List<Polygon> trPolygons = new ArrayList<>();
             
             for (Polygon p : polygons) {
-                p.transform(centerTransform);
+            	trPolygons.add(p.transformed(centerTransform));
             }
+            
+            return trPolygons;
         }
         
         return polygons;

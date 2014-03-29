@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import eu.mihosoft.vrl.v3d.ext.org.poly2tri.PolygonUtil;
 
 /**
@@ -85,9 +86,9 @@ public final class Polygon {
     public Polygon(List<Vertex> vertices) {
         this.vertices = vertices;
         this.plane = Plane.createFromPoints(
-                vertices.get(0).pos,
-                vertices.get(1).pos,
-                vertices.get(2).pos);
+                vertices.get(0).getPos(),
+                vertices.get(1).getPos(),
+                vertices.get(2).getPos());
     }
 
     /**
@@ -185,19 +186,6 @@ public final class Polygon {
     }
 
     /**
-     * Translates this polygon.
-     *
-     * @param v the vector that defines the translation
-     * @return this polygon
-     */
-    public Polygon translate(Vector3d v) {
-    	for (Vertex vertex : vertices) {
-            vertex.pos = vertex.pos.plus(v);
-    	}
-        return this;
-    }
-
-    /**
      * Returns a translated copy of this polygon.
      *
      * <b>Note:</b> this polygon is not modified
@@ -207,32 +195,12 @@ public final class Polygon {
      * @return a translated copy of this polygon
      */
     public Polygon translated(Vector3d v) {
-        return clone().translate(v);
-    }
-
-    /**
-     * Applies the specified transformation to this polygon.
-     *
-     * <b>Note:</b> if the applied transformation performs a mirror operation
-     * the vertex order of this polygon is reversed.
-     *
-     * @param transform the transformation to apply
-     *
-     * @return this polygon
-     */
-    public Polygon transform(Transform transform) {
-
-    	for (Vertex v : vertices) {
-    		v.transform(transform);
+    	List<Vertex> newVertices = new ArrayList<>();
+    	
+    	for (Vertex vertex : vertices) {
+            newVertices.add(new Vertex(vertex.getPos().plus(v), vertex.getNormal()));
     	}
-
-        if (transform.isMirror()) {
-            // the transformation includes mirroring. flip polygon
-
-            flip();
-
-        }
-        return this;
+        return new Polygon(newVertices);
     }
 
     /**
@@ -247,7 +215,22 @@ public final class Polygon {
      * @return a transformed copy of this polygon
      */
     public Polygon transformed(Transform transform) {
-        return clone().transform(transform);
+    	List<Vertex> newVertices = new ArrayList<>();
+    	
+    	for (Vertex v : vertices) {
+    		newVertices.add(v.transformed(transform));
+    	}
+    	
+    	Polygon result = new Polygon(newVertices);
+
+        if (transform.isMirror()) {
+            // the transformation includes mirroring. flip polygon
+
+            result.flip();
+
+        }
+        
+        return result;
     }
 
     /**
@@ -281,13 +264,12 @@ public final class Polygon {
     private static Polygon fromPoints(List<Vector3d> points, Plane plane) {
 
         Vector3d normal
-                = (plane != null) ? plane.normal.clone() : new Vector3d(0, 0, 0);
+                = (plane != null) ? plane.normal : Vector3d.ZERO;
 
         List<Vertex> vertices = new ArrayList<>();
 
         for (Vector3d p : points) {
-            Vector3d vec = p.clone();
-            Vertex vertex = new Vertex(vec, normal);
+            Vertex vertex = new Vertex(p, normal);
             vertices.add(vertex);
         }
 

@@ -54,7 +54,7 @@ public class Sphere extends Primitive {
      *
      */
     public Sphere() {
-        init();
+        this(new Vector3d(0, 0, 0), 1, 16, 8);
     }
 
     /**
@@ -64,8 +64,7 @@ public class Sphere extends Primitive {
      * @param radius sphare radius
      */
     public Sphere(double radius) {
-        init();
-        this.radius = radius;
+        this(new Vector3d(0, 0, 0), radius, 16, 8);
     }
 
     /**
@@ -82,13 +81,6 @@ public class Sphere extends Primitive {
         this.radius = radius;
         this.numSlices = numSlices;
         this.numStacks = numStacks;
-    }
-
-    private void init() {
-        center = new Vector3d(0, 0, 0);
-        radius = 1;
-        numSlices = 16;
-        numStacks = 8;
     }
 
     private Vertex sphereVertex(Vector3d c, double r, double theta, double phi) {

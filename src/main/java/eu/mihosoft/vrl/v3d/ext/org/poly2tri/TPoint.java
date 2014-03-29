@@ -62,9 +62,9 @@ package eu.mihosoft.vrl.v3d.ext.org.poly2tri;
 
 class TPoint extends TriangulationPoint
 {
-    private double _x;
-    private double _y;
-    private double _z;
+    private final double _x;
+    private final double _y;
+    private final double _z;
     
     public TPoint( double x, double y )
     {
@@ -78,20 +78,10 @@ class TPoint extends TriangulationPoint
         _z = z;
     }
 
-    public double getX() { return _x; }
-    public double getY() { return _y; }
-    public double getZ() { return _z;  }
-
-    public float getXf() { return (float)_x; }
-    public float getYf() { return (float)_y; }
-    public float getZf() { return (float)_z;  }
-
     @Override
-    public void set( double x, double y, double z )
-    {
-        _x = x;
-        _y = y;
-        _z = z;
-    }
-
+	public double getX() { return _x; }
+    @Override
+	public double getY() { return _y; }
+    @Override
+	public double getZ() { return _z;  }
 }

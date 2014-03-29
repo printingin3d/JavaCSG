@@ -40,12 +40,12 @@ public class Vertex {
     /**
      * Vertex position.
      */
-    public Vector3d pos;
+    private final Vector3d pos;
 
     /**
      * Normal.
      */
-    public Vector3d normal;
+    private Vector3d normal;
 
     /**
      * Constructor. Creates a vertex.
@@ -60,7 +60,7 @@ public class Vertex {
 
     @Override
     public Vertex clone() {
-        return new Vertex(pos.clone(), normal.clone());
+        return new Vertex(pos, normal);
     }
 
     /**
@@ -104,23 +104,20 @@ public class Vertex {
     }
 
     /**
-     * Applies the specified transform to this vertex.
-     *
-     * @param transform the transform to apply
-     * @return this vertex
-     */
-    public Vertex transform(Transform transform) {
-        pos = pos.transform(transform);
-        return this;
-    }
-
-    /**
      * Applies the specified transform to a copy of this vertex.
      *
      * @param transform the transform to apply
      * @return a copy of this transform
      */
     public Vertex transformed(Transform transform) {
-        return clone().transform(transform);
+        return new Vertex(pos.transformed(transform), normal);
     }
+
+	public Vector3d getPos() {
+		return pos;
+	}
+
+	public Vector3d getNormal() {
+		return normal;
+	}
 }

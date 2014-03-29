@@ -90,11 +90,14 @@ public class Transform {
      * @return this transform
      */
     public Transform rotX(double degrees) {
-        double radians = degrees * Math.PI * (1.0 / 180.0);
+        double radians = degrees * Math.PI / 180.0;
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
         double elemenents[] = {
-            1, 0, 0, 0, 0, cos, sin, 0, 0, -sin, cos, 0, 0, 0, 0, 1
+            1, 0, 0, 0, 
+            0, cos, sin, 0, 
+            0, -sin, cos, 0, 
+            0, 0, 0, 1
         };
         m.mul(new Matrix4d(elemenents));
         return this;
@@ -112,7 +115,10 @@ public class Transform {
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
         double elemenents[] = {
-            cos, 0, -sin, 0, 0, 1, 0, 0, sin, 0, cos, 0, 0, 0, 0, 1
+            cos, 0, -sin, 0, 
+            0, 1, 0, 0, 
+            sin, 0, cos, 0, 
+            0, 0, 0, 1
         };
         m.mul(new Matrix4d(elemenents));
         return this;
@@ -130,7 +136,10 @@ public class Transform {
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
         double elemenents[] = {
-            cos, sin, 0, 0, -sin, cos, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+            cos, sin, 0, 0, 
+            -sin, cos, 0, 0, 
+            0, 0, 1, 0, 
+            0, 0, 0, 1
         };
         m.mul(new Matrix4d(elemenents));
         return this;
@@ -171,7 +180,10 @@ public class Transform {
      */
     public Transform translate(Vector3d vec) {
         double elemenents[] = {
-            1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, vec.x, vec.y, vec.z, 1
+            1, 0, 0, 0, 
+            0, 1, 0, 0, 
+            0, 0, 1, 0, 
+            vec.x, vec.y, vec.z, 1
         };
         m.mul(new Matrix4d(elemenents));
 
@@ -192,60 +204,6 @@ public class Transform {
             1, 0, 0, x,
             0, 1, 0, y,
             0, 0, 1, z,
-            0, 0, 0, 1
-        };
-        m.mul(new Matrix4d(elemenents));
-        return this;
-    }
-
-    /**
-     * Applies a translation operation to this transform.
-     *
-     * @param value translation (x axis)
-     *
-     * @return this transform
-     */
-    public Transform translateX(double value) {
-        double elemenents[] = {
-            1, 0, 0, value,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        };
-        m.mul(new Matrix4d(elemenents));
-        return this;
-    }
-
-    /**
-     * Applies a translation operation to this transform.
-     *
-     * @param value translation (y axis)
-     *
-     * @return this transform
-     */
-    public Transform translateY(double value) {
-        double elemenents[] = {
-            1, 0, 0, 0,
-            0, 1, 0, value,
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        };
-        m.mul(new Matrix4d(elemenents));
-        return this;
-    }
-
-    /**
-     * Applies a translation operation to this transform.
-     *
-     * @param value translation (z axis)
-     *
-     * @return this transform
-     */
-    public Transform translateZ(double value) {
-        double elemenents[] = {
-            1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, value,
             0, 0, 0, 1
         };
         m.mul(new Matrix4d(elemenents));
@@ -282,10 +240,7 @@ public class Transform {
      * @return this transform
      */
     public Transform scale(Vector3d vec) {
-        double elemenents[] = {
-            vec.x, 0, 0, 0, 0, vec.y, 0, 0, 0, 0, vec.z, 0, 0, 0, 0, 1};
-        m.mul(new Matrix4d(elemenents));
-        return this;
+    	return scale(vec.x, vec.y, vec.z);
     }
 
     /**
@@ -299,7 +254,10 @@ public class Transform {
      */
     public Transform scale(double x, double y, double z) {
         double elemenents[] = {
-            x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1};
+            x, 0, 0, 0, 
+            0, y, 0, 0, 
+            0, 0, z, 0, 
+            0, 0, 0, 1};
         m.mul(new Matrix4d(elemenents));
         return this;
     }
@@ -312,52 +270,7 @@ public class Transform {
      * @return this transform
      */
     public Transform scale(double s) {
-        double elemenents[] = {
-            s, 0, 0, 0, 0, s, 0, 0, 0, 0, s, 0, 0, 0, 0, 1};
-        m.mul(new Matrix4d(elemenents));
-        return this;
-    }
-
-    /**
-     * Applies a scale operation (x axis) to this transform.
-     *
-     * @param s x scale value
-     *
-     * @return this transform
-     */
-    public Transform scaleX(double s) {
-        double elemenents[] = {
-            s, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
-        m.mul(new Matrix4d(elemenents));
-        return this;
-    }
-
-    /**
-     * Applies a scale operation (y axis) to this transform.
-     *
-     * @param s y scale value
-     *
-     * @return this transform
-     */
-    public Transform scaleY(double s) {
-        double elemenents[] = {
-            1, 0, 0, 0, 0, s, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
-        m.mul(new Matrix4d(elemenents));
-        return this;
-    }
-
-    /**
-     * Applies a scale operation (z axis) to this transform.
-     *
-     * @param s z scale value
-     *
-     * @return this transform
-     */
-    public Transform scaleZ(double s) {
-        double elemenents[] = {
-            1, 0, 0, 0, 0, 1, 0, 0, 0, 0, s, 0, 0, 0, 0, 1};
-        m.mul(new Matrix4d(elemenents));
-        return this;
+    	return scale(s, s, s);
     }
 
     /**
@@ -368,14 +281,11 @@ public class Transform {
      * @return the specified vector
      */
     public Vector3d transform(Vector3d vec) {
-        double x, y;
-        x = m.m00 * vec.x + m.m01 * vec.y + m.m02 * vec.z + m.m03;
-        y = m.m10 * vec.x + m.m11 * vec.y + m.m12 * vec.z + m.m13;
-        vec.z = m.m20 * vec.x + m.m21 * vec.y + m.m22 * vec.z + m.m23;
-        vec.x = x;
-        vec.y = y;
+        double x = m.m00 * vec.x + m.m01 * vec.y + m.m02 * vec.z + m.m03;
+        double y = m.m10 * vec.x + m.m11 * vec.y + m.m12 * vec.z + m.m13;
+        double z = m.m20 * vec.x + m.m21 * vec.y + m.m22 * vec.z + m.m23;
 
-        return vec;
+        return new Vector3d(x, y, z);
     }
 
 //    // Multiply a CSG.Vector3D (interpreted as 3 column, 1 row) by this matrix

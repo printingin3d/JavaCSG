@@ -37,9 +37,9 @@ package eu.mihosoft.vrl.v3d;
  */
 public class Vector3d {
 
-    public double x;
-    public double y;
-    public double z;
+    public final double x;
+    public final double y;
+    public final double z;
     
     public static final Vector3d ZERO = new Vector3d(0, 0, 0);
     public static final Vector3d UNITY = new Vector3d(1, 1, 1);
@@ -73,11 +73,6 @@ public class Vector3d {
         this.x = x;
         this.y = y;
         this.z = 0;
-    }
-
-    @Override
-    public Vector3d clone() {
-        return new Vector3d(x, y, z);
     }
 
     /**
@@ -245,17 +240,6 @@ public class Vector3d {
     }
 
     /**
-     * Applies the specified transformation to this vector.
-     *
-     * @param transform the transform to apply
-     *
-     * @return this vector
-     */
-    public Vector3d transform(Transform transform) {
-        return transform.transform(this);
-    }
-
-    /**
      * Returns a transformed copy of this vector.
      *
      * @param transform the transform to apply
@@ -265,7 +249,7 @@ public class Vector3d {
      * @return a transformed copy of this vector
      */
     public Vector3d transformed(Transform transform) {
-        return clone().transform(transform);
+        return transform.transform(this);
     }
 
     @Override

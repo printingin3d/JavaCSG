@@ -127,20 +127,20 @@ final class Node {
      *
      * <b>Note:</b> polygons are splitted if necessary.
      *
-     * @param polygons the polygons to clip
+     * @param polys the polygons to clip
      *
      * @return the cliped list of polygons
      */
-    private List<Polygon> clipPolygons(List<Polygon> polygons) {
+    private List<Polygon> clipPolygons(List<Polygon> polys) {
 
-        if (this.plane == null) {
-            return new ArrayList<>(polygons);
+        if (this.plane == null || polys.isEmpty()) {
+            return new ArrayList<>(polys);
         }
 
         List<Polygon> frontP = new ArrayList<>();
         List<Polygon> backP = new ArrayList<>();
 
-        for (Polygon polygon : polygons) {
+        for (Polygon polygon : polys) {
             this.plane.splitPolygon(polygon, frontP, backP, frontP, backP);
         }
         if (this.front != null) {
@@ -185,10 +185,8 @@ final class Node {
         List<Polygon> localPolygons = new ArrayList<>(this.polygons);
         if (this.front != null) {
             localPolygons.addAll(this.front.allPolygons());
-//            polygons = Utils.concat(polygons, this.front.allPolygons());
         }
         if (this.back != null) {
-//            polygons = Utils.concat(polygons, this.back.allPolygons());
             localPolygons.addAll(this.back.allPolygons());
         }
 
@@ -231,4 +229,6 @@ final class Node {
             this.back.build(backP);
         }
     }
+    
+    
 }

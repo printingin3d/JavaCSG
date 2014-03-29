@@ -60,13 +60,14 @@ package eu.mihosoft.vrl.v3d.ext.org.poly2tri;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import java.util.ArrayList;
+import java.util.List;
 
 
 
-abstract class TriangulationPoint extends Point
+abstract class TriangulationPoint
 {
     // List of edges this point constitutes an upper ending point (CDT)
-    private ArrayList<DTSweepConstraint> edges; 
+    private List<DTSweepConstraint> edges; 
     
     @Override
     public String toString()
@@ -74,17 +75,11 @@ abstract class TriangulationPoint extends Point
         return "[" + getX() + "," + getY() + "]";
     }
     
-    public abstract double getX();
-    public abstract double getY();
-    public abstract double getZ();
-
-    public abstract float getXf();
-    public abstract float getYf();
-    public abstract float getZf();
+	public abstract double getX();
+	public abstract double getY();
+	public abstract double getZ();
     
-    public abstract void set( double x, double y, double z );
-    
-    public ArrayList<DTSweepConstraint> getEdges()
+    public List<DTSweepConstraint> getEdges()
     {
         return edges;
     }
@@ -119,7 +114,8 @@ abstract class TriangulationPoint extends Point
         return null;
     }
     
-    public boolean equals(Object obj) 
+    @Override
+	public boolean equals(Object obj) 
     {
         if( obj instanceof TriangulationPoint ) 
         {
@@ -129,7 +125,8 @@ abstract class TriangulationPoint extends Point
         return super.equals( obj );
     }
 
-    public int hashCode()
+    @Override
+	public int hashCode()
     {
         long bits = java.lang.Double.doubleToLongBits(getX());
         bits ^= java.lang.Double.doubleToLongBits(getY()) * 31;
